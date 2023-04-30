@@ -1,0 +1,15 @@
+import bpy
+
+# get the active scene
+scene = bpy.context.scene
+
+# get a list of all objects with "head" in their name
+head_objs = [obj for obj in scene.objects if "head" in obj.name.lower()]
+
+# loop through each pair of objects and swap their positions
+for i in range(len(head_objs) - 1):
+    obj1 = head_objs[i]
+    obj2 = head_objs[i + 1]
+    temp_pos = obj1.location.copy()
+    obj1.location = obj2.location
+    obj2.location = temp_pos
