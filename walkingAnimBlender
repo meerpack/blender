@@ -1,0 +1,44 @@
+import bpy
+
+# Set up the scene
+scene = bpy.context.scene
+fps = scene.render.fps
+scene.frame_end = 60
+
+# Add a plane to the scene as the ground
+bpy.ops.mesh.primitive_plane_add()
+ground = bpy.context.active_object
+ground.name = "Ground"
+
+# Add a character to the scene
+bpy.ops.import_scene.fbx(filepath="path/to/character.fbx")
+character = bpy.context.selected_objects[0]
+character.animation_data_create()
+
+# Create a walking animation for the character
+for i in range(0, 60):
+    bpy.context.scene.frame_set(i)
+
+    # Set the location of the character's feet
+    character.pose.bones["Foot.L"].location = (0, 0, 0)
+    character.pose.bones["Foot.R"].location = (0.3, 0, 0)
+
+    # Set the rotation of the character's legs
+    character.pose.bones["Thigh.L"].rotation_euler = (0, 0, 0.2)
+    character.pose.bones["Thigh.R"].rotation_euler = (0, 0, -0.2)
+
+    # Set the location of the character's hips and torso
+    character.pose.bones["Hip"].location = (0.15, 0, 0)
+    character.pose.bones["Spine"].location = (0.15, 0, 0)
+
+    # Set the rotation of the character's arms
+    character.pose.bones["Arm.L"].rotation_euler = (0.2, 0, 0)
+    character.pose.bones["Arm.R"].rotation_euler = (-0.2, 0, 0)
+
+    # Set the rotation of the character's head
+    character.pose.bones["Neck"].rotation_euler = (0, 0, 0.1)
+    character.pose.bones["Head"].rotation_euler = (0, 0, 0.1)
+
+    # Keyframe the character's pose at the current frame
+    character.keyframe_insert(data_path="pose.bones[*].location", index=-1)
+    character.keyframe_insert(data_path="pose.bones[*].rotation_euler", index=-1)
