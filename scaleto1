@@ -1,0 +1,9 @@
+import bpy
+
+# Get the selected objects
+selected_objs = bpy.context.selected_objects
+
+# Iterate over the selected objects
+for obj in selected_objs:
+    # Set the object's scale to (1, 1, 1)
+    obj.scale = (1, 1, 1)
