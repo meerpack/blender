@@ -1,0 +1,10 @@
+import bpy
+
+# Get the list of all installed add-ons
+addons = bpy.context.preferences.addons
+
+# Get the most recently installed add-on by sorting the list of add-ons by installation time and getting the last item
+most_recent_addon = sorted(addons, key=lambda x: x.bl_info.get('version', (0, 0, 0))[-1])[-1]
+
+# Enable the most recently installed add-on
+bpy.ops.preferences.addon_enable(module=most_recent_addon.module)
