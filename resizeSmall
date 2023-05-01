@@ -1,0 +1,15 @@
+import bpy
+
+# Get all objects in the scene
+objects = bpy.data.objects
+
+# Find the smallest object by volume
+smallest_object = min(objects, key=lambda obj: obj.dimensions.x * obj.dimensions.y * obj.dimensions.z)
+
+# Get the size of the smallest object
+smallest_size = min(smallest_object.dimensions.x, smallest_object.dimensions.y, smallest_object.dimensions.z)
+
+# Resize all objects to match the size of the smallest object
+for obj in objects:
+    scale_factor = smallest_size / min(obj.dimensions.x, obj.dimensions.y, obj.dimensions.z)
+    obj.scale *= scale_factor
