@@ -1,0 +1,15 @@
+import bpy
+
+# Get the current scene
+scene = bpy.context.scene
+
+# Get a list of all the object names in the scene collection
+object_names = [obj.name for obj in scene.collection.all_objects]
+
+# Sort the names alphabetically
+sorted_names = sorted(object_names)
+
+# Iterate over the objects in the scene collection
+for i, obj in enumerate(scene.collection.all_objects):
+    # Set the object's name to the sorted name
+    obj.name = sorted_names[i]
