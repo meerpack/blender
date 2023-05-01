@@ -1,0 +1,28 @@
+import bpy
+
+# Get the selected object in the scene
+selected_obj = bpy.context.view_layer.objects.active
+
+# Create a new armature object and add it to the scene
+new_armature = bpy.data.armatures.new("Armature")
+armature_obj = bpy.data.objects.new("Armature", new_armature)
+bpy.context.collection.objects.link(armature_obj)
+
+# Set the armature object as the parent of the selected object
+selected_obj.parent = armature_obj
+
+# Set the armature object as the active object in the scene
+bpy.context.view_layer.objects.active = armature_obj
+
+# Enter edit mode for the armature
+bpy.ops.object.mode_set(mode='EDIT')
+
+# Create a new bone and set it as the parent of the existing bone
+new_bone = armature_obj.data.edit_bones.new("Bone")
+new_bone.tail = (0, 1, 0)
+existing_bone = armature_obj.pose.bones.get(selected_obj.name)
+existing_bone.parent = new_bone
+
+# Exit edit mode and set the selected object back as the active object
+bpy.ops.object.mode_set(mode='OBJECT')
+bpy.context.view_layer.objects.active = selected_obj
