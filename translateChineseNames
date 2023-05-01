@@ -1,0 +1,17 @@
+import bpy
+from googletrans import Translator
+
+# Set up the translator
+translator = Translator()
+
+# Get the current scene
+scene = bpy.context.scene
+
+# Iterate over the objects in the scene collection
+for obj in scene.collection.all_objects:
+    # Check if the object's name contains Chinese characters
+    if any('\u4e00' <= c <= '\u9fff' for c in obj.name):
+        # Translate the name to English
+        translation = translator.translate(obj.name, dest='en')
+        # Set the object's name to the translated name
+        obj.name = translation.text
