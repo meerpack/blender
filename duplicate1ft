@@ -1,0 +1,19 @@
+import bpy
+import mathutils
+
+# Get the selected object in the scene
+selected_obj = bpy.context.view_layer.objects.active
+
+# Create a duplicate of the object
+duplicate_obj = selected_obj.copy()
+bpy.context.collection.objects.link(duplicate_obj)
+
+# Get the world matrix of the selected object
+selected_matrix = selected_obj.matrix_world
+
+# Calculate the position of the duplicate object
+translation_vector = mathutils.Vector((0, 1, 0))  # Move one foot in the y-direction
+duplicate_matrix = selected_matrix @ mathutils.Matrix.Translation(translation_vector)
+
+# Apply the calculated matrix to the duplicate object
+duplicate_obj.matrix_world = duplicate_matrix
