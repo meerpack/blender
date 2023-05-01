@@ -1,0 +1,15 @@
+import bpy
+
+# Get all objects in the scene
+objects = bpy.data.objects
+
+# Find the largest object by volume
+largest_object = max(objects, key=lambda obj: obj.dimensions.x * obj.dimensions.y * obj.dimensions.z)
+
+# Get the size of the largest object
+largest_size = max(largest_object.dimensions.x, largest_object.dimensions.y, largest_object.dimensions.z)
+
+# Resize all objects to match the size of the largest object
+for obj in objects:
+    scale_factor = largest_size / max(obj.dimensions.x, obj.dimensions.y, obj.dimensions.z)
+    obj.scale *= scale_factor
