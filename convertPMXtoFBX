@@ -1,0 +1,15 @@
+import bpy
+
+# Set the path to the .pmx file
+pmx_file_path = "path/to/your/pmx/file.pmx"
+
+# Import the .pmx file
+bpy.ops.import_scene.pmx(filepath=pmx_file_path)
+
+# Make any necessary adjustments to the imported model
+
+# Set the path for the exported .fbx file
+fbx_file_path = "path/to/your/fbx/file.fbx"
+
+# Export the model as an .fbx file
+bpy.ops.export_scene.fbx(filepath=fbx_file_path, use_selection=True)
