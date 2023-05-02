@@ -1,0 +1,14 @@
+import bpy
+
+# Get the first imported object
+first_obj = None
+for obj in bpy.context.scene.objects:
+    if obj.name.startswith("imported_"):
+        first_obj = obj
+        break
+
+# Scale all objects to match the size of the first object
+if first_obj:
+    scale_factor = max(first_obj.dimensions) / 2
+    for obj in bpy.context.scene.objects:
+        obj.scale = (scale_factor / max(obj.dimensions)) * obj.scale
