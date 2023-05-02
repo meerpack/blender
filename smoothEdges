@@ -1,0 +1,15 @@
+import bpy
+
+# Get the active object
+obj = bpy.context.active_object
+
+# Check if the object has any edges
+if obj.type == "MESH" and len(obj.data.edges) > 0:
+    
+    # Set smooth shading for all faces
+    for poly in obj.data.polygons:
+        poly.use_smooth = True
+
+    # Set smooth shading for all edges
+    for edge in obj.data.edges:
+        edge.smooth = True
