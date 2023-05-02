@@ -1,0 +1,43 @@
+import bpy
+
+# Get the selected object
+selected_obj = bpy.context.object
+
+# Create a new armature object
+armature = bpy.data.armatures.new("Armature")
+armature_obj = bpy.data.objects.new("Armature", armature)
+bpy.context.scene.collection.objects.link(armature_obj)
+bpy.context.view_layer.objects.active = armature_obj
+
+# Create a new bone and set it as the root bone
+root_bone = armature.edit_bones.new("Root")
+root_bone.head = selected_obj.location
+root_bone.tail = selected_obj.location + (0, 0, 1)
+
+# Create a bone for each vertex group in the mesh
+mesh = selected_obj.data
+for group in mesh.vertex_groups:
+    bone = armature.edit_bones.new(group.name)
+    bone.head = selected_obj.location
+    bone.tail = selected_obj.location + (0, 0, 1)
+    bone.use_connect = True
+    group_verts = [v for v in mesh.vertices if group.index in [g.group for g in v.groups]]
+    if len(group_verts) > 0:
+        bone.head = sum([selected_obj.matrix_world @ v.co for v in group_verts], Vector()) / len(group_verts)
+        bone.tail = bone.head + (0, 0, 1)
+
+# Parent the selected object to the armature
+selected_obj.parent = armature_obj
+selected_obj.parent_type = "OBJECT"
+selected_obj.parent_vertices = []
+
+# Bind the mesh to the armature
+bpy.ops.object.mode_set(mode="OBJECT")
+bpy.context.view_layer.objects.active = selected_obj
+bpy.ops.object.modifier_add(type="ARMATURE")
+bpy.context.object.modifiers["Armature"].object = armature_obj
+bpy.ops.object.mode_set(mode="POSE")
+bpy.ops.pose.armature_apply()
+
+# Set the armature to be the active object
+bpy.context.view_layer.objects.active = armature_obj
