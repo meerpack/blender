@@ -1,0 +1,16 @@
+import bpy
+
+# Define a function to check if a string contains only ASCII characters
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
+
+# Get the active scene
+scene = bpy.context.scene
+
+# Iterate over all objects in the scene
+for obj in scene.objects:
+    # Check if the object's name is ASCII-only
+    if not is_ascii(obj.name):
+        # If the name contains non-ASCII characters, hide the object
+        obj.hide_render = True
+        obj.hide_viewport = True
