@@ -1,0 +1,13 @@
+import bpy
+
+# Get the bounding box of all objects in the scene
+scene = bpy.context.scene
+bbox = [obj.bound_box for obj in scene.objects]
+bbox_min = [min(bound_box, key=lambda x: x[i])[i] for i in range(3)]
+bbox_max = [max(bound_box, key=lambda x: x[i])[i] for i in range(3)]
+bbox_center = [(bbox_min[i] + bbox_max[i]) / 2 for i in range(3)]
+
+# Calculate the offset for each object
+for obj in scene.objects:
+    offset = [bbox_center[i] - obj.location[i] for i in range(3)]
+    obj.location += offset
