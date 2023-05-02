@@ -1,0 +1,21 @@
+import bpy
+
+# Get all objects in the scene
+objects = bpy.data.objects
+
+# Find the two objects with "Body" in their name
+object1 = None
+object2 = None
+for obj in objects:
+    if "Body" in obj.name:
+        if not object1:
+            object1 = obj
+        else:
+            object2 = obj
+            break
+
+# Swap the positions of the two objects
+if object1 and object2:
+    temp_location = object1.location.copy()
+    object1.location = object2.location
+    object2.location = temp_location
