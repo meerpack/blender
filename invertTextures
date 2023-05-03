@@ -1,0 +1,26 @@
+import bpy
+
+# Get the active object
+obj = bpy.context.active_object
+
+# Check if the object is a mesh object
+if obj.type == "MESH":
+    
+    # Loop through all materials of the object
+    for material_slot in obj.material_slots:
+        
+        # Check if the material has a texture
+        if material_slot.material and material_slot.material.texture_slots:
+            
+            # Loop through all texture slots of the material
+            for texture_slot in material_slot.material.texture_slots:
+                
+                # Check if the texture is an image texture
+                if texture_slot and texture_slot.texture.type == "IMAGE":
+                    
+                    # Get the image texture data
+                    img = texture_slot.texture.image
+                    
+                    # Invert the image colors
+                    for pixel in img.pixels:
+                        pixel = 1 - pixel
