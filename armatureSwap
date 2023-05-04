@@ -1,0 +1,28 @@
+import bpy
+
+# Define the armature object file paths
+armature_path_1 = "/path/to/armature_1.blend/Object/Armature"
+armature_path_2 = "/path/to/armature_2.blend/Object/Armature"
+
+# Get all the mesh objects in the scene
+mesh_objects = [obj for obj in bpy.context.scene.objects if obj.type == 'MESH']
+
+# Loop through each mesh object and swap its armature
+for obj in mesh_objects:
+    # Get the armature modifier for the object
+    armature_modifier = obj.modifiers.get('Armature')
+    if armature_modifier:
+        # If the armature modifier exists, get the current armature object
+        current_armature_object = armature_modifier.object
+        # If the current armature object is the first one, replace it with the second armature object
+        if current_armature_object and current_armature_object.name == "Armature":
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.data.objects[current_armature_object.name].select_set(True)
+            bpy.ops.object.delete()
+            bpy.ops.wm.append(
+                directory=armature_path_2,
+                link=False,
+                filename="Armature"
+            )
+            new_armature_object = bpy.context.selected_objects[0]
+            armature_modifier.object = new_armature_object
