@@ -1,0 +1,23 @@
+import bpy
+
+# Define the texture file paths
+texture_path_1 = "/path/to/texture_1.png"
+texture_path_2 = "/path/to/texture_2.png"
+
+# Get all the mesh objects in the scene
+mesh_objects = [obj for obj in bpy.context.scene.objects if obj.type == 'MESH']
+
+# Loop through each mesh object and swap its texture
+for obj in mesh_objects:
+    # Get the material slots for the object
+    material_slots = obj.material_slots
+    for slot in material_slots:
+        # Get the material for the slot
+        material = slot.material
+        # Loop through each texture slot in the material
+        for texture_slot in material.texture_slots:
+            # If the texture slot is valid and its texture is the first one, replace it with the second texture
+            if texture_slot and texture_slot.texture and texture_slot.texture.image and texture_slot.texture.image.filepath == texture_path_1:
+                texture_slot.texture.image.filepath = texture_path_2
+                texture_slot.texture.image.reload()
+                break
